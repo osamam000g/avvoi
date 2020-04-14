@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Header from './Header';
 import { Col , Collapse } from 'reactstrap';
 import SideBar from './SideBar'
+import Dashboard from './Dashboard'
+import {BrowserRouter as Router , Switch , Route} from 'react-router-dom'
+import ViewCustomers from './ViewCustomers'
 
 
 
@@ -39,6 +42,8 @@ export class MainBody extends Component {
     }
     render() {
         return (
+            <Router>
+    
             <div className="container-fluid">
                 <div className="row">
                     <Col md={this.colMdDefine("col2")} className="SideBarHolder primary">
@@ -50,7 +55,14 @@ export class MainBody extends Component {
 
                     <Col md={this.colMdDefine("col10")} className="MainBodyHolder "> 
                         <Header onClick={this.toggle} />
-
+                      <Switch>
+                          <Route path="/ViewCustomers">
+                              <ViewCustomers />
+                          </Route>
+                          <Route path="/">
+                            <Dashboard />
+                          </Route>
+                      </Switch>
 
             
 
@@ -58,6 +70,8 @@ export class MainBody extends Component {
 
                 </div>
             </div>
+</Router>
+
         )   }
 }
 

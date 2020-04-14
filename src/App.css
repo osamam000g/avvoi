@@ -582,3 +582,38 @@ ul.mr-auto.navbar-nav li a {
 .Logo{
   margin-top:15px;
 }
+.sideBarItem a {
+  color: #fff;
+}
+.customerSearchForm {
+  margin-top: 11px;
+  padding: 19px;
+}.Footer {
+  background: #2C3E50;
+  padding: 10px;
+}.page-item:first-child .page-link {
+  margin-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}.page-item:last-child .page-link {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}.page-link {
+  color: #fff;
+  background-color: #2C3E50;
+}.page-item.disabled .page-link {
+  color: #fff;
+  background-color: #2C3E50;
+  border-color: #dee2e6;
+}.CustomersPerPageText.col-md-2 {
+  color: #fff;
+  margin: 6px 0 !important;
+  flex: 0 0 15%;
+  margin-right: -27px !important;
+}.Footer .form-control {
+  width: 70%;
+  padding: 5px !important;
+  border-radius: 0;
+}.Footer {
+  padding-bottom: 0;
+}
