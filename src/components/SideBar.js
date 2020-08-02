@@ -32,9 +32,13 @@ const SideBar = (props) => {
             <Collapse isOpen={isOpenCustomer}>
                 <ListGroup>
                     <Link to="/ViewCustomers">
-                    <ListGroupItem className="primary"><FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; View Customers </ListGroupItem>
+                         <ListGroupItem className="primary"><FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; View Customers </ListGroupItem>
                     </Link>
-                    <ListGroupItem className="primary"> <FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; Add Customer </ListGroupItem>
+
+                    <Link to="/AddCustomer">
+                       <ListGroupItem className="primary"> <FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; Add Customer </ListGroupItem>
+                    </Link>
+
                 </ListGroup>
             </Collapse>
         </div>

@@ -31,8 +31,8 @@ const Header = (props) => {
         <div className="row">
 
      
-      <Navbar  light expand="md">
-      <Button color="primary" onClick={props.onClick} style={{ marginBottom: '1rem' }}> <FontAwesomeIcon icon={faStream} /> </Button> &nbsp;&nbsp;&nbsp;
+      <Navbar  light expand="md" fixed="top" >
+      {/* <Button color="primary" onClick={props.onClick} style={{ marginBottom: '1rem' }}> <FontAwesomeIcon icon={faStream} /> </Button> &nbsp;&nbsp;&nbsp; */}
         <NavbarBrand href="/">AVVOI</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

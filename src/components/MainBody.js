@@ -3,11 +3,10 @@ import Header from './Header';
 import { Col , Collapse } from 'reactstrap';
 import SideBar from './SideBar'
 import Dashboard from './Dashboard'
-import {BrowserRouter as Router , Switch , Route} from 'react-router-dom'
-import ViewCustomers from './ViewCustomers'
-
-
-
+import {BrowserRouter as Router , Switch , Route ,hashHistory} from 'react-router-dom'
+import ViewCustomers from './customer/ViewCustomers'
+import AddCustomer from './customer/AddCustomer'
+import SingleCustomer from './customer/SingleCustomer'
 
 
 export class MainBody extends Component {
@@ -58,6 +57,12 @@ export class MainBody extends Component {
                       <Switch>
                           <Route path="/ViewCustomers">
                               <ViewCustomers />
+                          </Route>
+                          <Route path="/SingleCustomer/:id" component={SingleCustomer}/>
+                              {/* <SingleCustomer />
+                          </Route> */}
+                          <Route path="/AddCustomer">
+                              <AddCustomer />
                           </Route>
                           <Route path="/">
                             <Dashboard />

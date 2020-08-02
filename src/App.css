@@ -617,3 +617,107 @@ ul.mr-auto.navbar-nav li a {
 }.Footer {
   padding-bottom: 0;
 }
+.text-primary {
+    color: #2C3E50!important;
+}
+.spinner-border {
+    display: inline-block;
+    width: 7rem;
+    height: 7rem;
+    vertical-align: text-bottom;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+    position: absolute;
+    right: 51%;
+}.show{
+  display: block;
+}.hide{
+  display: none;
+}.tableContainer {
+  min-height: 500px;
+}a {
+  color: #fff;
+}a:hover {
+  text-decoration: none;
+  color: #fff;
+}th a {
+  color:#000;
+}th a:hover{
+  color:#000
+}.MainBodyHolder.col-md-10 {
+  height: auto;
+}
+
+.MainBody {
+  background: #f5f5f5;
+}.customerSearchForm {
+  margin-top: 11px;
+  padding: 19px;
+  border: 1px solid #f5f5f5;
+  background: #ffff;
+  box-shadow: 0 0 5px #ccc;
+  margin: 30px;
+  margin-top: 0;
+
+}.tableContainer {
+  min-height: 500px;
+  background: #fff;
+  margin: 30px;
+  box-shadow: 0 0 5px #ccc;
+}tbody tr:hover {
+  background: #f5f5f5;
+}.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+  border-color: #f5f5f5;
+    padding: 10px;
+}.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  padding: 12px 7px;
+  vertical-align: middle;
+  text-align: center;
+}.table-bordered, .table-bordered td, .table-bordered th {
+  border: 1px solid #dee2e6;
+}.BGwhiteBox {
+  background: #fff;
+  padding: 14px;
+  box-shadow: 0 0 5px #ccc;
+}.collapseAddStyle .col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+  float: left;
+}.collapseAddStyle.collapse.show {
+  width: 100%;
+}.MainBody {
+  min-height: 700px;
+}.pull-right {
+  float: right;
+}.mr10 {
+  margin-right: 10px;
+}
+.navbar-expand-md {
+  flex: 0 0 83.33333%;
+  max-width: 83.3333%;
+  width: 100%;
+}.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: UNSET;
+  z-index: 1030;
+}.MainBody {
+  margin-top: 76px;
+}.MainBodyHolder.col-md-10 .navbar {
+  background: #fff;
+}
+
+/*=======================
+      ViewCustomers
+====================== */
+a.TableLink {
+  width: 100%;
+  display: contents;
+  color: #000;
+}.table-bordered, .table-bordered td, .table-bordered th {
+  border: 1px solid #dee2e6;
+  text-align: center;
+}
