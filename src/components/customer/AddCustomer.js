@@ -83,9 +83,9 @@ export class AddCustomer extends Component {
                               
                                 <br />
                                 <FormGroup row>
-                                    <Label for="ContactPerson" sm={3}> Contact Person</Label>
+                                    <Label for="ContactOption" sm={3}> Contact Option</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="ContactPerson" id="ContactPerson"  />
+                                    <Input type="text" name="ContactOption" id="ContactOption"  />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
