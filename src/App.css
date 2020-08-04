@@ -621,16 +621,18 @@ ul.mr-auto.navbar-nav li a {
     color: #2C3E50!important;
 }
 .spinner-border {
-    display: inline-block;
-    width: 7rem;
-    height: 7rem;
-    vertical-align: text-bottom;
-    border: .25em solid currentColor;
-    border-right-color: transparent;
-    border-radius: 50%;
-    animation: spinner-border .75s linear infinite;
-    position: absolute;
-    right: 51%;
+      display: inline-block;
+      width: 10rem;
+      height: 10rem;
+      vertical-align: text-bottom;
+      border: .25em solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spinner-border .75s linear infinite;
+      position: absolute;
+      right: 44%;
+      z-index: 1;
+      top: 24%;
 }.show{
   display: block;
 }.hide{

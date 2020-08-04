@@ -1,6 +1,6 @@
 import React  from 'react'
 // import { useParams } from 'react-srouter-dom'
-import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse } from 'reactstrap';
+import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse , Spinner } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle , faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios'
@@ -10,6 +10,7 @@ class SingleCustomer extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            spinner:'show',
 
             id: this.props.match.params.id ,
             isOpenMoreoptions:true,
@@ -36,7 +37,7 @@ class SingleCustomer extends React.Component {
             billingState:'',
             billingCity:'',
             billingZipCode:'',
-            billingCountry:' ',
+            billingCountry:'',
 
             shippingStreetAdress:'',
             shippingStreetAdress2:'',
@@ -47,8 +48,11 @@ class SingleCustomer extends React.Component {
 
         }
     }
- 
+// =========================================
+//               Get USER DATA 
+//==========================================
  componentDidMount(){
+
      axios.get(`https://mohamedo12.sg-host.com/wp-json/wc/v3/customers/${this.state.id}?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(
         res=>{
 
@@ -147,7 +151,7 @@ class SingleCustomer extends React.Component {
 // shippingCountry:'',
             let shippingCountry = res.data.shipping.country;
             if(shippingCountry){this.setState({shippingCountry:shippingCountry }); console.log(this.state.shippingCountry)  }else{ console.log('shippingCountry')    }
-        
+            this.setState({spinner:'hide'})
 
         }
      ).catch(error =>{
@@ -157,13 +161,26 @@ class SingleCustomer extends React.Component {
 
      )
  }
+ //===============================================
+//         TOGGLE MORE OPTION Button FUN 
+// ===============================================
+
     toggleMoreOptions = () => this.setState({isOpenMoreoptions:!this.state. isOpenMoreoptions});
+
+ //===============================================
+//        IS ACTIVE INOUT HANDEL CHANGE
+// ===============================================
 
     hangelChangeChecked = (e) => {
        this.setState({
            isActive:e.target.checked
+       }, () => {console.log(this.state.isActive);
        })
     }
+
+ //===============================================
+//       OTHER  INPUTS HANDEL CHANGE
+// ===============================================
     handelChangeInput = (e) =>{
             let stateName = e.target.name
             let stateValue = e.target.value
@@ -172,12 +189,71 @@ class SingleCustomer extends React.Component {
             })
             console.log(e.target.name , this.state[stateName]);
     }
+ //===============================================
+//              FORM SUBMITTION FUN
+// ===============================================
+
+    handelSubmitForm = (e) => {
+        this.setState({spinner:'show'})
+        e.preventDefault();
+        console.log('form submited');
+        axios.put(`https://mohamedo12.sg-host.com/wp-json/wc/v3/customers/${this.state.id}?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`,
+         {
+      
+            "billing": {
+              "address_1": this.state.billingStreetAdress,
+              "address_2": this.state.billingStreetAdress2,
+              "city": this.state.billingCity,
+              "state": this.state.billingState,
+              "country": this.state.billingCountry,
+            },
+            "shipping": {
+              "address_1": this.state.shippingStreetAdress,
+              "address_2": this.state.shippingStreetAdress2,
+              "city": this.state.shippingCity,
+              "state": this.state.shippingState,
+              "country": this.state.shippingCountry
+            }
+            ,"meta_data":[
+                { "key":"userBalance" , "value":this.state.openingBalance},
+                { "key":"contact_option" , "value":this.state.contactOption },
+                { "key":"is_active","value":"104"},
+                { "key":"linkedin_url", "value":this.state.Linkedin },
+                { "key":"facebook" , "value":this.state.FB },
+                { "key":"twitter" , "value":this.state.Twitter },
+                { "key":"google+" , "value":this.state.Google },
+                { "key":"user_loyalty_points" , "value":this.state.LoyaltyPoint },
+                { "key":"vatid" , "value":this.state.VATID },
+                { "key":"contact_person" , "value":this.state.contactPerson },
+                { "key":"fax" , "value":this.state.fax },
+                { "key":"mobile_number" , "value":this.state.mobileNumber },
+                { "key":"email" , "value":this.state.email },
+                { "key":"website_url" , "value":this.state.website },
+
+        ]
+        
+                    }
+                    
+                    ).then(res => {
+                        this.setState({spinner:'hide'}, () =>{
+                            window.location.reload(false)
+                        })
+            console.log(res.data);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+// ================= Render ====================
     render (){
         let  {id}  = this.props.match.params
         return (
             <div className="MainBody">
+                 <center>
+                      <Spinner className={this.state.spinner}  color="primary"/>
+                    </center>
                    <div className="container-fluid">
-                     <Form>
+                     <Form onSubmit={this.handelSubmitForm}>
                          <div className="row">
 
                          <div className="col-md-6" ></div>
@@ -187,8 +263,9 @@ class SingleCustomer extends React.Component {
                             <button type="submit" className="btn btn-success  pull-right mr10" ><FontAwesomeIcon icon={faCheckCircle} /> update customer </button>
                         </div>
                          </div>
+                       
                     <div className="row">
-
+                   
                           <div className="col-md-6 ">
                               <br />
                             <h2>Basic Information</h2>
@@ -246,13 +323,13 @@ class SingleCustomer extends React.Component {
                                 <FormGroup row>
                                     <Label for="ContactOption" sm={3}> Contact Option</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="ContactOption" onChange={this.handelChangeInput} id="ContactOption" defaultValue={this.state.contactOption} />
+                                    <Input type="text" name="contactOption" onChange={this.handelChangeInput} id="ContactOption" defaultValue={this.state.contactOption} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="ContactPerson" sm={3}>Contact Person</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="ContactPerson" id="ContactPerson" onChange={this.handelChangeInput} defaultValue={this.state.contactPerson} />
+                                    <Input type="text" name="contactPerson" id="ContactPerson" onChange={this.handelChangeInput} defaultValue={this.state.contactPerson} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -264,7 +341,7 @@ class SingleCustomer extends React.Component {
                                 <FormGroup row>
                                     <Label for="MobileNumber" sm={3}>Mobile Number</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="MobileNumber" id="MobileNumber" onChange={this.handelChangeInput} defaultValue={this.state.mobileNumber} />
+                                    <Input type="text" name="mobileNumber" id="MobileNumber" onChange={this.handelChangeInput} defaultValue={this.state.mobileNumber} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
@@ -276,7 +353,7 @@ class SingleCustomer extends React.Component {
                                 <FormGroup row>
                                     <Label for="Website" sm={3}>Website</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="Website" id="Website" onChange={this.handelChangeInput} defaultValue={this.state.website}/>
+                                    <Input type="text" name="website" id="Website" onChange={this.handelChangeInput} defaultValue={this.state.website}/>
                                     </Col>
                                 </FormGroup>
                                
@@ -374,7 +451,7 @@ class SingleCustomer extends React.Component {
                                     <Label for="Country" sm={3}>Country</Label>
                                     <Col sm={9}>
                                     {/* <Input type="text" name="Country" id="Cou   ntry"  /> */}
-                                    <select   defaultValue={this.state.billingCountry} onChange={this.handelChangeInput}  name="billingCountry" id="Country"  class="form-control" >
+                                    <select   onChange={this.handelChangeInput}  name="billingCountry" id="Country"  class="form-control" value={this.state.billingCountry} >
                                         <option value="AF">Afghanistan</option>
                                         <option value="AX">Åland Islands</option>
                                         <option value="AL">Albania</option>
@@ -644,25 +721,25 @@ class SingleCustomer extends React.Component {
                                 <FormGroup row>
                                     <Label for="ShippingStreetAdress" sm={3}> Street Adress</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="ShippingStreetAdress" onChange={this.handelChangeInput} id="ShippingStreetAdress"  defaultValue={this.state.shippingStreetAdress}/>
+                                    <Input type="text" name="shippingStreetAdress" onChange={this.handelChangeInput} id="ShippingStreetAdress"  defaultValue={this.state.shippingStreetAdress}/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="ShippingStreetAdress2" sm={3}>Street Adress State2</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="ShippingStreetAdress2" onChange={this.handelChangeInput} id="ShippingStreetAdress2" defaultValue={this.state.shippingStreetAdress2}  />
+                                    <Input type="text" name="shippingStreetAdress2" onChange={this.handelChangeInput} id="ShippingStreetAdress2" defaultValue={this.state.shippingStreetAdress2}  />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="ShippingState" sm={3}>State</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="ShippingState" onChange={this.handelChangeInput} id="ShippingState" defaultValue={this.state.shippingState} />
+                                    <Input type="text" name="shippingState" onChange={this.handelChangeInput} id="ShippingState" defaultValue={this.state.shippingState} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>
                                     <Label for="ShippingCity" sm={3}>City</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="ShippingCity" onChange={this.handelChangeInput} id="ShippingCity" onChange={this.hangelChange} defaultValue={this.state.shippingCity}/>
+                                    <Input type="text" name="shippingCity" onChange={this.handelChangeInput} id="shippingCity"  defaultValue={this.state.shippingCity}/>
                                     </Col>
                                 </FormGroup>
                             
@@ -670,7 +747,7 @@ class SingleCustomer extends React.Component {
                                     <Label for="Country" sm={3}>Country</Label>
                                     <Col sm={9}>
                                     {/* <Input type="text" name="Country" id="Cou   ntry"  /> */}
-                                    <select name="shippingCountry" id="Country" multiple="" onChange={this.handelChangeInput} class="form-control" defaultValue={this.state.shippingCountry}>
+                                    <select name="shippingCountry" id="Country" multiple="" onChange={this.handelChangeInput} class="form-control" value={this.state.shippingCountry}>
                                         <option value="AF">Afghanistan</option>
                                         <option value="AX">Åland Islands</option>
                                         <option value="AL">Albania</option>
