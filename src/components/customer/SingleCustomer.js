@@ -53,7 +53,7 @@ class SingleCustomer extends React.Component {
 //==========================================
  componentDidMount(){
 
-     axios.get(`https://mohamedo12.sg-host.com/wp-json/wc/v3/customers/${this.state.id}?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(
+     axios.get(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers/${this.state.id}?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(
         res=>{
 
             this.setState({customerName:res.data.username});

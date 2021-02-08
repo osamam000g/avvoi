@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse , Spinner   } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle , faTimesCircle} from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios'
 
 export class AddCustomer extends Component {
     constructor(props){
@@ -47,7 +48,17 @@ export class AddCustomer extends Component {
 
     componentDidMount(){
         this.setState({spinner:'hide'})
+       // axios.post(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`,{"email": "os@54.mmmmnfds5llmn", "billing": {"first_name": "mohamed","last_name": "osama"}} ).then(res=>{
+            // this.setState({spinner:'hide'})
+            // this.setState({customersLength:res.data.length})
+            // this.setState({nubmerOfPgaes: Math.ceil(this.state.customersLength/this.state.perpage)}) 
+            // this.setState({pageEnd:this.state.pageStart+this.state.perpage}) 
+            // this.setState({customers:res.data.slice(this.state.pageStart , this.state.pageEnd)})
+//console.log(res)
+
+ //   })
     }
+    
 
 
 

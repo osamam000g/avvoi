@@ -19,7 +19,8 @@ export class ViewCustomers extends Component {
             nubmerOfPgaes:0,
             pageStart:0,
             pageEnd:0,
-            pageNumber:1
+            pageNumber:1,
+            limit:1
 
         }
     }
@@ -28,12 +29,18 @@ export class ViewCustomers extends Component {
         //============================
         // get all customers from api 
         //============================
-        axios.get(`https://mohamedo12.sg-host.com/wp-json/wc/v3/customers?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(res=>{
+        axios.get(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}&per_page=${this.state.perpage}&page=${this.state.pageNumber}`).then(res=>{
                 this.setState({spinner:'hide'})
                 this.setState({customersLength:res.data.length})
                 this.setState({nubmerOfPgaes: Math.ceil(this.state.customersLength/this.state.perpage)}) 
                 this.setState({pageEnd:this.state.pageStart+this.state.perpage}) 
-                this.setState({customers:res.data.slice(this.state.pageStart , this.state.pageEnd)})
+                // this.setState({customers:res.data.slice(this.state.pageStart , this.state.pageEnd)})
+                if(res.data.length===0){
+                    this.setState({limit:0})
+                }else{
+                    this.setState({limit:1})
+                }
+                this.setState({customers:res.data})
 
 
         })
@@ -44,44 +51,55 @@ export class ViewCustomers extends Component {
     //====================
 
      renderCustomerToView = () => {
-          return(
-            this.state.customers.map((customer)=>{
-                const   customerId=customer.id ;
-                const  linkTo = `/SingleCustomer/${customerId}`
-                return(
-                    <Link to={linkTo} className="TableLink">
-                       <tr key={customer.id}>
-                        {/* <th scope="row">{customer.id}</th> */}
-                        <td>{customer.username}</td>
-                        <td>{customer.email}</td>
-                        <td>{customer.billing.phone}</td>
-                        <td>{customer.meta_data.length === 0 ? '0' : customer.meta_data[0].value }</td>
-                        <td>
-                            <FontAwesomeIcon icon={faEdit} id="EditCustomerIcon" />
-                            <UncontrolledTooltip placement="left" target="EditCustomerIcon">
-                                Edit Customer
-                            </UncontrolledTooltip>
-                            &nbsp;
-                            <FontAwesomeIcon icon={faFileInvoice} id="CreateIvoiceIcon" />
-                            <UncontrolledTooltip placement="top" target="CreateIvoiceIcon">
-                                Create invoice
-                            </UncontrolledTooltip>
-                            &nbsp;
+        if(this.state.limit===1){
+            return(
+              
+                this.state.customers.map((customer)=>{
+                    const   customerId=customer.id ;
+                    const  linkTo = `/SingleCustomer/${customerId}`
+                    return(
+                        <Link to={linkTo} className="TableLink">
+                           <tr key={customer.id}>
+                            {/* <th scope="row">{customer.id}</th> */}
+                            <td>{customer.username}</td>
+                            <td>{customer.email}</td>
+                            <td>{customer.billing.phone}</td>
+                            <td>{customer.meta_data.length === 0 ? '0' : customer.meta_data[0].value }</td>
 
-                            <FontAwesomeIcon icon={faTrash} id="DeleteCustomerInvoice" />
-                            <UncontrolledTooltip placement="bottom" target="DeleteCustomerInvoice">
-                                Delete Customer
-                            </UncontrolledTooltip>
-                            </td>
-                        </tr>
-                    </Link>                  
-                )
+                            {/* <td>
+                                <FontAwesomeIcon icon={faEdit} id="EditCustomerIcon" />
+                                <UncontrolledTooltip placement="left" target="EditCustomerIcon">
+                                    Edit Customer
+                                </UncontrolledTooltip>
+                                &nbsp;
+                                <FontAwesomeIcon icon={faFileInvoice} id="CreateIvoiceIcon"   />
+                                <UncontrolledTooltip placement="top" target="CreateIvoiceIcon">
+                                    Create invoice
+                                </UncontrolledTooltip>
+                                &nbsp;
+                                <FontAwesomeIcon icon={faTrash} id="DeleteCustomerInvoice"  onClick={ this.preventAction } />
+                                <UncontrolledTooltip placement="bottom" target="DeleteCustomerInvoice"   >
+                                    Delete Customer
+                                </UncontrolledTooltip>
+                                </td> */}
+                            </tr>
+                        </Link>                  
+                    )
+                    
+                })
                 
-            })
-            
-          )
+              )
+        }else{
+            return(
+                <div>
+                   <h2> no result to show </h2>
+                </div>
+            )
+        }
+        
         
     }
+
     //=========================
     //  Handel Input Change 
     //======================
@@ -97,7 +115,7 @@ export class ViewCustomers extends Component {
     handelFormSubmit = (e) => {
         e.preventDefault();
         this.setState({spinner:'show'})
-        axios.get(`https://mohamedo12.sg-host.com/wp-json/wc/v3/customers?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(res=>{
+        axios.get(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(res=>{
             this.setState({customers:res.data.slice(this.state.pageStart , this.state.pageEnd)})
             let FilterdCustomers = this.state.customers.filter((customer)=>{
                 return customer.username.toLowerCase().includes(this.state.searchValue) || customer.billing.phone.toLowerCase().includes(this.state.searchValue);
@@ -118,7 +136,9 @@ export class ViewCustomers extends Component {
     handelPerPage = (e) =>{
         this.setState({perpage:e.target.value},function(){
             this.setState({spinner:'show'})
+            this.setState({pageNumber:this.state.pageNumber+1})
             this.componentDidMount()
+  
         })
     }
     //=======================================
@@ -187,7 +207,7 @@ export class ViewCustomers extends Component {
                                 {/* </Button> */}
                             </Col>
                         </Row>
-                    <div>Number of Customers :  {this.state.customersLength}</div>
+                    {/* <div>Number of Customers :  {this.state.customersLength}</div> */}
                      </Form>
                     </div>
                     <center>
@@ -203,7 +223,7 @@ export class ViewCustomers extends Component {
                         <th>Email </th>
                         <th>Phone </th>
                         <th>Balance </th>
-                        <th>Actions</th>
+                        {/* <th>Actions</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -230,12 +250,13 @@ export class ViewCustomers extends Component {
                                         {this.state.pageNumber}
                                         </PaginationLink>
                                     </PaginationItem>
-                                    <PaginationItem>
+                                    {/* <PaginationItem>
                                         <PaginationLink >
                                         of {this.state.nubmerOfPgaes}
                                         </PaginationLink>
-                                    </PaginationItem>
-                                    <PaginationItem className={this.state.nubmerOfPgaes === this.state.pageNumber ? 'disabled' : 'good'}>
+                                    </PaginationItem> */}
+                                    <PaginationItem className={this.state.limit === 0 ? 'disabled' : 'good'}>
+                                    {/* <PaginationItem> */}
                                         <PaginationLink next  onClick={this.handelNextPage}  />
                                     </PaginationItem>
                                     {/* <PaginationItem>
@@ -254,7 +275,7 @@ export class ViewCustomers extends Component {
                                 <option >15</option>
                                 <option>20 </option>
                                 <option>100</option>
-                                <option>1000</option>
+                                {/* <option>1000</option> */}
                           </Input>
                           </Col>
 
