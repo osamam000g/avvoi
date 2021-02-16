@@ -3,6 +3,25 @@
   background-color: #2C3E50 !important;
   border-color: #2C3E50 !important;
 }
+.alert {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  width: 60%;
+  margin: 0 auto;
+}
+.modal-backdrop {
+  background-color: #fff;
+}
+.modal-dialog {
+  margin: 8.75rem auto;
+}
+.danger {
+  border-color: red;
+}
+.red{
+  color:red
+}
 .primary{
   background-color: #2C3E50 !important;
   border-color: #2C3E50 !important;
@@ -722,4 +741,34 @@ a.TableLink {
 }.table-bordered, .table-bordered td, .table-bordered th {
   border: 1px solid #dee2e6;
   text-align: center;
+}
+a.posButton.nav-link , .dashButton {
+  background: #ff0000;
+  box-shadow: 0 2px 6px 0 rgb(114 124 245 / 50%);
+  color: #fff;
+  background-color: #727cf5;
+  border-color: #727cf5;
+  /* font-weight: 400 !important; */
+  border: 1px solid transparent;
+  padding: .45rem 1.5rem !important;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .15rem;
+}.m-2 {
+  margin: 0.4rem ​!important;
+}.chat-application .chat-fixed-search {
+  position: fixed;
+  z-index: 999;
+  background: #FFFFFF;
+  width: 300px;
+  border-bottom: 1px solid #E4E7ED;
+}.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.3em 0.3em;
+}a.posButton.nav-link , .dashButton {
+  margin: 0px 5px;
+}
+.dashButton{
+  background-color:darkslategray;
 }

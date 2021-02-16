@@ -1,9 +1,10 @@
 import React  from 'react'
 // import { useParams } from 'react-srouter-dom'
-import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse , Spinner } from 'reactstrap';
+import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse , Spinner , Alert ,  Modal, ModalHeader, ModalBody, ModalFooter  } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle , faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios'
+
 
 class SingleCustomer extends React.Component {
 
@@ -14,6 +15,9 @@ class SingleCustomer extends React.Component {
 
             id: this.props.match.params.id ,
             isOpenMoreoptions:true,
+
+            deleteAlert:false,
+            deleteModalShow:false,
 
             isActive:' ',
             customerName:'',
@@ -55,57 +59,47 @@ class SingleCustomer extends React.Component {
 
      axios.get(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers/${this.state.id}?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(
         res=>{
+            // console.log(res.data.meta_data.length);
+            for(var i = 0; i < res.data.meta_data.length; i++){
+                if(res.data.meta_data[i].key === "opening_balance" ){
+                  this.setState({openingBalance:res.data.meta_data[i].value})
+                }
+                 if(res.data.meta_data[i].key === "contact_option" ){
+                    this.setState({contactOption:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "contact_person" ){
+                    this.setState({contactPerson:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "fax" ){
+                    this.setState({fax:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "mobile" ){
+                    this.setState({mobileNumber:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "email" ){
+                    this.setState({email:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "website" ){
+                    this.setState({website:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "fb" ){
+                    this.setState({FB:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "link" ){
+                    this.setState({Linkedin:res.data.meta_data[i].value})
+                  }
+                  if(res.data.meta_data[i].key === "google" ){
+                    this.setState({Google:res.data.meta_data[i].value})
+                  }
 
-            this.setState({customerName:res.data.username});
-// isActive
-            let is_Active = res.data.meta_data[4];
-            if(is_Active){
-                 this.setState({isActive:is_Active.value }); console.log(this.state.isActive)  }else{ console.log('is_Active')    }
-//loyalty
-            let loyalty = res.data.meta_data[14];
-            if(loyalty){this.setState({LoyaltyPoint:loyalty.value }); console.log(this.state.LoyaltyPoint)  }else{ console.log('loyalty')    }
-//vat
-            let vat = res.data.meta_data[16];
-            if(vat){this.setState({VATID:vat.value }); console.log(this.state.VATID)  }else{ console.log('VATID')    }
-//balance
-            let balance = res.data.meta_data[0];
-            if(balance){this.setState({openingBalance:balance.value }); console.log(this.state.openingBalance)  }else{ console.log('balance')    }
-//contactOption
-            let contactOption = res.data.meta_data[2];
-            if(contactOption){this.setState({contactOption:contactOption.value }); console.log(this.state.contactOption)  }else{ console.log('contactOption')    }
-//contactPerson
-            let contactPerson = res.data.meta_data[18];
-            if(contactPerson){this.setState({contactPerson:contactPerson.value }); console.log(this.state.contactPerson)  }else{ console.log('contactPerson')    }
-//fax
-            let fax = res.data.meta_data[20];
-            if(fax){this.setState({fax:fax.value }); console.log(this.state.fax)  }else{ console.log('fax')    }
+            }
+            
+            console.log( res.data);
 
- //mobileNumber
-            let mobileNumber = res.data.meta_data[22];
-            if(mobileNumber){this.setState({mobileNumber:mobileNumber.value }); console.log(this.state.mobileNumber)  }else{ console.log('mobileNumber')    }
-
- // email
-            let email = res.data.meta_data[24];
-            if(email){this.setState({email:email.value }); console.log(this.state.email)  }else{ console.log('email')    }
-
-//web url
-            let website = res.data.meta_data[25];
-            if(website){this.setState({website:website.value }); console.log(this.state.website)  }else{ console.log('website')    }
-// FB:'',
-            let FB = res.data.meta_data[8];
-            if(FB){this.setState({FB:FB.value }); console.log(this.state.FB)  }else{ console.log('FB')    }
-
- // Linkedin:'',
-            let Linkedin = res.data.meta_data[6];
-            if(Linkedin){this.setState({Linkedin:Linkedin.value }); console.log(this.state.Linkedin)  }else{ console.log('Linkedin')    }
-// Twitter:'',
-            let Twitter = res.data.meta_data[10];
-            if(Twitter){this.setState({Twitter:Twitter.value }); console.log(this.state.Twitter)  }else{ console.log('Twitter')    }
-// Google:'',
-            let Google = res.data.meta_data[12];
-            if(Google){this.setState({Google:Google.value }); console.log(this.state.Google)  }else{ console.log('Google')    }
-
-
+            this.setState({customerName:res.data.first_name});
+// // isActive
+//             let is_Active = res.data.meta_data[4];
+//             if(is_Active){
 // billingStreetAdress:'',
             let billingStreetAdress = res.data.billing.address_1;
             if(billingStreetAdress){this.setState({billingStreetAdress:billingStreetAdress }); console.log(this.state.billingStreetAdress)  }else{ console.log('billingStreetAdress')    }
@@ -171,12 +165,12 @@ class SingleCustomer extends React.Component {
 //        IS ACTIVE INOUT HANDEL CHANGE
 // ===============================================
 
-    hangelChangeChecked = (e) => {
-       this.setState({
-           isActive:e.target.checked
-       }, () => {console.log(this.state.isActive);
-       })
-    }
+    // hangelChangeChecked = (e) => {
+    //    this.setState({
+    //        isActive:e.target.checked
+    //    }, () => {console.log(this.state.isActive);
+    //    })
+    // }
 
  //===============================================
 //       OTHER  INPUTS HANDEL CHANGE
@@ -197,7 +191,7 @@ class SingleCustomer extends React.Component {
         this.setState({spinner:'show'})
         e.preventDefault();
         console.log('form submited');
-        axios.put(`https://mohamedo12.sg-host.com/wp-json/wc/v3/customers/${this.state.id}?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`,
+        axios.put(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers/${this.state.id}?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`,
          {
       
             "billing": {
@@ -215,20 +209,20 @@ class SingleCustomer extends React.Component {
               "country": this.state.shippingCountry
             }
             ,"meta_data":[
-                { "key":"userBalance" , "value":this.state.openingBalance},
+                { "key":"opening_balance" , "value":this.state.openingBalance},
                 { "key":"contact_option" , "value":this.state.contactOption },
-                { "key":"is_active","value":"104"},
-                { "key":"linkedin_url", "value":this.state.Linkedin },
-                { "key":"facebook" , "value":this.state.FB },
-                { "key":"twitter" , "value":this.state.Twitter },
-                { "key":"google+" , "value":this.state.Google },
-                { "key":"user_loyalty_points" , "value":this.state.LoyaltyPoint },
-                { "key":"vatid" , "value":this.state.VATID },
+                // { "key":"is_active","value":"104"},
+                { "key":"link", "value":this.state.Linkedin },
+                { "key":"fb" , "value":this.state.FB },
+                // { "key":"twitter" , "value":this.state.Twitter },
+                { "key":"google" , "value":this.state.Google },
+                // { "key":"user_loyalty_points" , "value":this.state.LoyaltyPoint },
+                // { "key":"vatid" , "value":this.state.VATID },
                 { "key":"contact_person" , "value":this.state.contactPerson },
                 { "key":"fax" , "value":this.state.fax },
-                { "key":"mobile_number" , "value":this.state.mobileNumber },
+                { "key":"mobile" , "value":this.state.mobileNumber },
                 { "key":"email" , "value":this.state.email },
-                { "key":"website_url" , "value":this.state.website },
+                { "key":"website" , "value":this.state.website },
 
         ]
         
@@ -243,24 +237,73 @@ class SingleCustomer extends React.Component {
             console.log(error)
         })
     }
+    // =======================deleteItem===============================
+    deleteItem = (e) =>{
+        this.setState({spinner:'show'})
+        // e.preventDefault();
+        console.log('delete');
 
+        axios.delete(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers/${this.state.id}?force=true&consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`).then(
+        res=>{
+            console.log(res.data);
+            this.setState({spinner:'hide'})
+            this.setState({deleteAlert:true})
+            this.toggleModal() 
+            this.props.history.push('/ViewCustomers')
+
+        })
+
+    }
+    toggleAlery = () =>{
+        this.setState({deleteAlert:false})
+    }
+
+    toggleModal = (e) =>{
+        if(e){
+        e.preventDefault();
+    }
+
+        this.setState({deleteModalShow:!this.state.deleteModalShow})
+    }
 // ================= Render ====================
     render (){
         let  {id}  = this.props.match.params
         return (
             <div className="MainBody">
+            <div>
+
+            {/* <Button color="danger" onClick={this.toggleModal}>Modal</Button> */}
+            <Modal isOpen={this.state.deleteModalShow} modalTransition={{ timeout: 500 }} backdropTransition={{ timeout: 500 }}
+                toggle={this.toggleModal} className="name">
+                <ModalHeader toggle={this.toggleModal}>Delete Item</ModalHeader>
+                <ModalBody>
+                        Are you sure you want to delete this item ?
+                </ModalBody>
+                <ModalFooter>
+                <Button color="success" onClick={this.toggleModal}>NO</Button>{' '}
+                <Button color="danger" onClick={this.deleteItem}>Yes</Button>
+                </ModalFooter>
+            </Modal>
+
+            </div>
                  <center>
                       <Spinner className={this.state.spinner}  color="primary"/>
                     </center>
                    <div className="container-fluid">
                      <Form onSubmit={this.handelSubmitForm}>
+                     <div className="row">
+                     <Alert color="success" isOpen={this.state.deleteAlert} toggle={this.toggleAlery}>
+                            Item Deleted Successfully
+                        </Alert>
+                     </div>
                          <div className="row">
-
+                        
                          <div className="col-md-6" ></div>
                          <div className="col-md-6" >
                             <br />
                             {/* <button  className="btn btn-danger  pull-right mr10" ><FontAwesomeIcon icon={faTimesCircle} /> Cancel </button> */}
                             <button type="submit" className="btn btn-success  pull-right mr10" ><FontAwesomeIcon icon={faCheckCircle} /> update customer </button>
+                            <button onClick={this.toggleModal} className="btn btn-danger  pull-right mr10" ><FontAwesomeIcon icon={faTimesCircle} /> Delete </button>
                         </div>
                          </div>
                        
@@ -273,12 +316,12 @@ class SingleCustomer extends React.Component {
                             <div className="BGwhiteBox">
                                 <br />
                                 <br />
-                                <FormGroup check>
+                                {/* <FormGroup check>
                                     <Label check>
                                     <Input type="checkbox" id="checkbox2" onChange={this.hangelChangeChecked} defaultChecked={this.state.isActive}/>{' '}
                                       Is Active Customer
                                     </Label>
-                                </FormGroup>
+                                </FormGroup> */}
                                 <br />
                                 <FormGroup row>
                                     <Label for="Name" sm={3}> Customer Name</Label>
@@ -286,7 +329,7 @@ class SingleCustomer extends React.Component {
                                     <Input type="text" name="customerName" id="Name" onChange={this.handelChangeInput} defaultValue={this.state.customerName} />
                                     </Col>
                                 </FormGroup>
-                                <FormGroup row>
+                                {/* <FormGroup row>
                                     <Label for="Loy" sm={3}>Loyalty Points</Label>
                                     <Col sm={9}>
                                     <Input type="text" name="LoyaltyPoint" id="Loy" onChange={this.handelChangeInput} defaultValue={this.state.LoyaltyPoint} />
@@ -297,7 +340,7 @@ class SingleCustomer extends React.Component {
                                     <Col sm={9}>
                                     <Input type="text" name="VATID" id="Tin" onChange={this.handelChangeInput} defaultValue={this.state.VATID} />
                                     </Col>
-                                </FormGroup>
+                                </FormGroup> */}
                                 <FormGroup row>
                                     <Label for="Balance" sm={3}>Opening Balance</Label>
                                     <Col sm={9}>
@@ -394,12 +437,12 @@ class SingleCustomer extends React.Component {
                                     <Input type="text" name="Linkedin" id="Linkedin" onChange={this.handelChangeInput}  defaultValue={this.state.Linkedin}/>
                                     </Col>
                                 </FormGroup>
-                                <FormGroup row>
+                                {/* <FormGroup row>
                                     <Label for="Twitter" sm={3}>Twitter</Label>
                                     <Col sm={9}>
                                     <Input type="text" name="Twitter" id="Twitter" onChange={this.handelChangeInput} defaultValue={this.state.Twitter} />
                                     </Col>
-                                </FormGroup>
+                                </FormGroup> */}
                                 <FormGroup row>
                                     <Label for="Google" sm={3}>Google</Label>
                                     <Col sm={9}>

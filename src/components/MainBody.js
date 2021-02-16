@@ -7,6 +7,7 @@ import {BrowserRouter as Router , Switch , Route ,hashHistory} from 'react-route
 import ViewCustomers from './customer/ViewCustomers'
 import AddCustomer from './customer/AddCustomer'
 import SingleCustomer from './customer/SingleCustomer'
+import Pos from './pos/AddOrders'
 
 
 export class MainBody extends Component {
@@ -61,9 +62,12 @@ export class MainBody extends Component {
                           <Route path="/SingleCustomer/:id" component={SingleCustomer}/>
                               {/* <SingleCustomer />
                           </Route> */}
-                          <Route path="/AddCustomer">
+                          <Route path="/AddCustomer" component={AddCustomer}/>
+                          <Route path="/pos" component={Pos}/>
+
+                          {/* <Route path="/">
                               <AddCustomer />
-                          </Route>
+                          </Route> */}
                           <Route path="/">
                             <Dashboard />
                           </Route>

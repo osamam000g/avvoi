@@ -20,7 +20,8 @@ export class ViewCustomers extends Component {
             pageStart:0,
             pageEnd:0,
             pageNumber:1,
-            limit:1
+            limit:1,
+            getMobile:''
 
         }
     }
@@ -41,11 +42,33 @@ export class ViewCustomers extends Component {
                     this.setState({limit:1})
                 }
                 this.setState({customers:res.data})
+                console.log(res.data)
 
 
         })
    
     }
+    // ==============get phone=================
+    getMobileData = (customer) =>{
+            for(var i = 0 ; i < customer.meta_data.length ; i ++ ){
+                if(customer.meta_data[i].key === "mobile" ){
+                    // this.setState({getMobile:customer.meta_data.value})
+                    console.log( customer.meta_data[i].value);
+                    return customer.meta_data[i].value
+                         }
+            }           
+
+    }
+    // ==============get email=================
+    getEmailData = (customer) =>{
+        for(var i = 0 ; i < customer.meta_data.length ; i ++ ){
+            if(customer.meta_data[i].key === "email" ){
+                console.log( customer.meta_data[i].value);
+                return customer.meta_data[i].value
+                     }
+        }           
+
+}
     //====================
     //  Render Customer 
     //====================
@@ -61,9 +84,10 @@ export class ViewCustomers extends Component {
                         <Link to={linkTo} className="TableLink">
                            <tr key={customer.id}>
                             {/* <th scope="row">{customer.id}</th> */}
-                            <td>{customer.username}</td>
-                            <td>{customer.email}</td>
-                            <td>{customer.billing.phone}</td>
+                            <td>{customer.first_name}</td>
+                            <td>{this.getEmailData(customer)}</td>
+                            {/* <td>{console.log(customer.meta_data)}</td> */}
+                            <td>{this.getMobileData(customer)}</td>
                             <td>{customer.meta_data.length === 0 ? '0' : customer.meta_data[0].value }</td>
 
                             {/* <td>

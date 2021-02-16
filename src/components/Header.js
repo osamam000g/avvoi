@@ -19,6 +19,8 @@ import {
   Badge,
   Button
 } from 'reactstrap';
+import {Link} from 'react-router-dom';
+
 
 const Header = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,12 +39,21 @@ const Header = (props) => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
+          <NavItem>
+              <NavLink  className="dashButton"> <Link to="/Dashboard">Dashboard</Link>    </NavLink>
+            </NavItem>
+            
+            <NavItem>
+              <NavLink  className="posButton"> <Link to="/pos">POS</Link>    </NavLink>
+            </NavItem>
             <NavItem>
               <NavLink href="/components/"><FontAwesomeIcon icon={faEnvelope} />  <Badge color="danger">2</Badge>  </NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="https://github.com/reactstrap/reactstrap">  <FontAwesomeIcon icon={faBell} />  <Badge color="danger">1</Badge> </NavLink>
             </NavItem>
+            
+          
            
           </Nav>
           <NavbarText>

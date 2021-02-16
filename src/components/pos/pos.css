@@ -1,0 +1,169 @@
+.bg-gradient-directional-purple {
+    color: #fff;
+    background-image: -webkit-linear-gradient(
+45deg
+, #7B1FA2, #BA68C8);
+    background-image: -moz-linear-gradient(
+        225deg, #727cf5, #2c3e50);
+    background-image: -o-linear-gradient(
+        225deg, #727cf5, #2c3e50);
+    background-image: linear-gradient(
+        225deg, #727cf5, #2c3e50);
+    background-repeat: repeat-x;
+    font-size: 1.1em;
+
+}.quantity {
+    position: relative;
+    padding: 2px;
+}.quantity input {
+    margin: 0px 7px;
+    text-align: center;
+    width: 45px;
+    height: 34px;
+    line-height: 1.45;
+    float: left;
+    display: block;
+    padding: 0;
+    margin-top: 3px;
+    padding-left: 2px;
+    border: 1px solid #eee;
+}.quantity-nav {
+    float: left;
+    position: relative;
+    height: 42px;
+}.body{
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}.blue {
+    color: #2196F3 !important;
+}.text-bold-600 {
+    font-weight: 600;
+}.font-medium-1 {
+    font-size: 1.1rem !important;
+}form .form-control {
+    border: 1px solid #ccd6e6;
+    color: #3f587e;
+}
+.form-control-sm {
+    height: -webkit-calc(1.375rem + 2px);
+    height: -moz-calc(1.375rem + 2px);
+    height: calc(1.375rem + 2px);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1;
+    border-radius: 0.21rem;
+}.pb-1, .py-1 {
+    padding-bottom: 1rem !important;
+}.m-0 {
+    margin: 0 !important;
+}.pt-1, .py-1 {
+    padding-top: 1em;
+}
+hr.mt-1, .my-1 {
+    margin-top: .25rem!important;
+    float: none;
+    width: 100%;
+}
+hr.mt-0, .my-0 {
+    margin-top: -9px!important;
+    width: 100%;
+}.nav-tabs {
+    border-bottom: 1px solid #dee2e6;
+    padding: 18px;
+}
+.chat-application .chat-fixed-search {
+    position: fixed;
+    z-index: 999;
+    background: #FFFFFF;
+    width: 300px;
+    border-bottom: 1px solid #E4E7ED;
+}div#customer {
+    border: 1px solid #E4E7ED;
+    border-top: none;
+}li.nav-item.pull-right {
+    position: absolute;
+    right: 13px;
+    bottom: 3px;
+}.col-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+    /* border: 1px solid #17a2b854; */
+    padding: 9px;
+    box-shadow: 0 0 5px #343a4024;
+
+}#customer .row {
+    width: 100% !important;
+}.m-2 {
+    margin: 4px .5rem!important;
+}img{
+    max-height: 100%;
+    max-width: 100%;
+}
+div#product {
+    height: -webkit-calc(100% - 83px) !important;
+    padding: 20px 30px;
+    overflow-y: scroll;
+    text-align: center;
+    height: -webkit-calc(100% - 112px);
+    height: -moz-calc(100% - 112px);
+    height: calc(100% - 112px);
+    background-color: #fff;
+}form .form-control {
+    border: 1px solid #ccd6e6;
+    color: #3f587e;
+}.round {
+    border-radius: 0.5rem;
+}.input-group > .form-control:not(:first-child), .input-group > .custom-select:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}.input-group > .form-control, .input-group > .custom-select, .input-group > .custom-file {
+    position: relative;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -moz-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    width: 1%;
+    margin-bottom: 0;
+}.teal {
+    color: #009688 !important;
+}.input-group-text {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0 1rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #4E5154;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #F5F7FA;
+    border: 1px solid #BABFC7;
+    border-radius: 0.25rem;
+}
+.pt-1, .py-1 {
+    padding-top: 1em !important;
+}#customer .svg-inline--fa.fa-w-16 {
+    width: 2em;
+}#customer .svg-inline--fa.fa-w-14 {
+    width: 2em;
+}#customer .svg-inline--fa.fa-w-9 {
+    width: 1em;
+}div#ppid-0 {
+    /* border: 1px solid; */
+    box-shadow: 0 0 5px;
+    box-shadow: 0 0 2px #343a4024;
+    margin-bottom: -5px !important;
+}.MainBody {
+    background: #fff;
+}#product .col-sm-9 {
+    padding: 0  !important;
+}

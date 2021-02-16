@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse , Spinner   } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle , faTimesCircle} from '@fortawesome/free-solid-svg-icons';
+import {useParams} from 'react-router-dom';
 import axios from 'axios'
 
 export class AddCustomer extends Component {
@@ -11,8 +12,9 @@ export class AddCustomer extends Component {
             spinner:'show',
             isOpenMoreoptions:false,
 
-
+            isDanger:'',
             isActive:' ',
+
             customerName:'',
             LoyaltyPoint:'',
             VATID:'',
@@ -48,15 +50,7 @@ export class AddCustomer extends Component {
 
     componentDidMount(){
         this.setState({spinner:'hide'})
-       // axios.post(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`,{"email": "os@54.mmmmnfds5llmn", "billing": {"first_name": "mohamed","last_name": "osama"}} ).then(res=>{
-            // this.setState({spinner:'hide'})
-            // this.setState({customersLength:res.data.length})
-            // this.setState({nubmerOfPgaes: Math.ceil(this.state.customersLength/this.state.perpage)}) 
-            // this.setState({pageEnd:this.state.pageStart+this.state.perpage}) 
-            // this.setState({customers:res.data.slice(this.state.pageStart , this.state.pageEnd)})
-//console.log(res)
 
- //   })
     }
     
 
@@ -85,11 +79,62 @@ hangelChangeChecked = (e) => {
          })
          console.log(e.target.name , this.state[stateName]);
  }
+//===============================================
+//       Handel Add customer Form Submition 
+// ===============================================
+HandelAddFormSubmition = (e) =>{
+e.preventDefault();
+        if(this.state.customerName === ""){   
+            this.setState({isDanger:'danger'})
+        }else{
+             this.setState({isDanger:''})
+             const Uid = Math.floor(Math.random() * Date.now()) 
 
+             axios.post(`https://127.0.0.1/wordpress/wp-json/wc/v3/customers?consumer_key=${process.env.REACT_APP_CLIENT_KEY}&consumer_secret=${process.env.REACT_APP_CLIENT_SECRET}`,
+               {
+                "email": `${Uid}@gmail.com`,
+                "first_name": this.state.customerName,
+                "billing": {
+                    "address_1": this.state.billingStreetAdress,
+                    "address_2": this.state.billingStreetAdress2,
+                    "city":   this.state.billingCity,
+                    "country": this.state.billingCountry,
+                    "state": this.state.billingState
+                    },
+                    "shipping": {
+                        "address_1": this.state.shippingStreetAdress,
+                        "address_2": this.state.shippingStreetAdress2,
+                        "city": this.state.shippingCity,
+                        "country": this.state.shippingCountry,
+                        "state": this.state.shippingState
+                        },
+                    "meta_data": [
+                        {"key": "opening_balance","value": this.state.openingBalance},
+                        {"key": "contact_option","value": this.state.contactOption},
+                        {"key": "contact_person","value": this.state.contactPerson},
+                        {"key": "fax","value": this.state.fax},
+                        {"key": "mobile","value": this.state.mobileNumber},
+                        {"key": "email","value": this.state.email},
+                        { "key": "website","value": this.state.website},
+                        {"key": "fb","value": this.state.FB},
+                        {"key": "link","value": this.state.Linkedin},
+                        {"key": "google","value": this.state.Google}
+                     ]
+            }
+               
+               ).then(res=>{
+                    this.setState({spinner:'hide'})
+                     console.log(res.data)
+
+           })
+
+        }
+}
  
     render (){
         return (
             <div className="MainBody">
+            
                  <center>
                       <Spinner className={this.state.spinner}  color="primary"/>
                     </center>
@@ -101,7 +146,7 @@ hangelChangeChecked = (e) => {
                          <div className="col-md-6" >
                             <br />
                             {/* <button  className="btn btn-danger  pull-right mr10" ><FontAwesomeIcon icon={faTimesCircle} /> Cancel </button> */}
-                            <button type="submit" className="btn btn-success  pull-right mr10" ><FontAwesomeIcon icon={faCheckCircle} /> update customer </button>
+                            <button type="submit" onClick={this.HandelAddFormSubmition} className="btn btn-success  pull-right mr10" ><FontAwesomeIcon icon={faCheckCircle} /> Save </button>
                         </div>
                          </div>
                        
@@ -114,31 +159,33 @@ hangelChangeChecked = (e) => {
                             <div className="BGwhiteBox">
                                 <br />
                                 <br />
-                                <FormGroup check>
+                                {/* <FormGroup check>
                                     <Label check>
                                     <Input type="checkbox" id="checkbox2" onChange={this.hangelChangeChecked} />{' '}
                                       Is Active Customer
                                     </Label>
-                                </FormGroup>
+                                </FormGroup> */}
                                 <br />
                                 <FormGroup row>
                                     <Label for="Name" sm={3}> Customer Name</Label>
                                     <Col sm={9}>
-                                    <Input type="text" name="customerName" id="Name" onChange={this.handelChangeInput}  />
+                                    <h6 className={this.state.isDanger==="danger" ? 'red show' :'hide'} >Required Field</h6>
+                                    <Input type="text" className={this.state.isDanger} name="customerName" id="Name" onChange={this.handelChangeInput}  />
                                     </Col>
                                 </FormGroup>
-                                <FormGroup row>
+                                {/* <FormGroup row>
                                     <Label for="Loy" sm={3}>Loyalty Points</Label>
                                     <Col sm={9}>
                                     <Input type="text" name="LoyaltyPoint" id="Loy" onChange={this.handelChangeInput}  />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup row>
+                                </FormGroup> */}
+                                
+                                {/* <FormGroup row>
                                     <Label for="Tin" sm={3}>TIN / VAT ID</Label>
                                     <Col sm={9}>
                                     <Input type="text" name="VATID" id="Tin" onChange={this.handelChangeInput}  />
                                     </Col>
-                                </FormGroup>
+                                </FormGroup> */}
                                 <FormGroup row>
                                     <Label for="Balance" sm={3}>Opening Balance</Label>
                                     <Col sm={9}>
