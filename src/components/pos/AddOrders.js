@@ -11,6 +11,7 @@ export class AddOrders extends Component {
     constructor(props){
         super(props);
         this.state = {
+            searchInput:'',
             spinner:'show',
             getCustomerModalState:false,
             getUserPage:1,
@@ -21,6 +22,7 @@ export class AddOrders extends Component {
             toggleGuest:'show',
             toggleUser:'hide',
             selectedUser:''
+            
         }
     }
 
@@ -37,7 +39,7 @@ getAllCustomers = () =>{
     }).then(response=>{
          for (let i = 1; i <= this.state.totalGetCustomersPages ; i++) {
             getAllCustomers1(this.state.PerPage , i ).then(res=>{
-                console.log(res.data)
+                // console.log(res.data)
                 this.setState({
                     custData: this.state.custData.concat(res.data)
                   })
@@ -50,6 +52,14 @@ getAllCustomers = () =>{
        
     // }
    
+}
+handelSearchCustomer = (e) =>{
+   
+    var targetValue = e.target.value
+    this.setState({searchInput:targetValue})
+
+    console.log(this.state.searchInput)
+    console.log('this.state.searchInput')
 }
 
 
@@ -92,7 +102,7 @@ getMobileData = (customer) =>{
     for(var i = 0 ; i < customer.meta_data.length ; i ++ ){
         if(customer.meta_data[i].key === "mobile" ){
             // this.setState({getMobile:customer.meta_data.value})
-            console.log( customer.meta_data[i].value);
+            // console.log( customer.meta_data[i].value);
             return customer.meta_data[i].value
                  }
     }           
@@ -102,7 +112,7 @@ getMobileData = (customer) =>{
 getEmailData = (customer) =>{
 for(var i = 0 ; i < customer.meta_data.length ; i ++ ){
     if(customer.meta_data[i].key === "email" ){
-        console.log( customer.meta_data[i].value);
+        // console.log( customer.meta_data[i].value);
         return customer.meta_data[i].value
              }
 }           
@@ -112,7 +122,7 @@ setUser = (id) =>{
 console.log(id)
 this.setState({toggleUser:'row match-height show customerInfo  m-0  pb-1'})
 this.setState({toggleGuest:'hide'})
-console.log(this.state.custData)
+// console.log(this.state.custData)
 this.setState({selectedUser:this.state.custData.filter(item => item.id === id)[0]})
 this.toggleGetCust()
 
@@ -124,7 +134,7 @@ this.toggleGetCust()
     <Modal isOpen={this.state.getCustomerModalState} toggle={this.toggleGetCust} className="getCustomerModal">
         <ModalHeader toggle={this.toggleGetCust}>select customer</ModalHeader>
         <ModalBody>
-                <input type="text" placeholder="Enter Customer Name" onChange={this.getAllCustomers} className="form-control"/>
+                <input type="text" placeholder="Enter Customer Name" onChange={this.handelSearchCustomer} className="form-control"/>
                 <div className="usersData">
                 <Table dark>
       <thead>
@@ -139,7 +149,15 @@ this.toggleGetCust()
       {/* {console.log(this.state.custData)} */}
       {
          
-          this.state.custData.map((customer , index )=>{
+          this.state.custData.filter((customer)=>{
+              let mobile = this.getMobileData(customer) ? this.getMobileData(customer) : ''
+              let email = this.getEmailData(customer) ? this.getEmailData(customer) : ''
+              if(this.state.searchInput == ""){
+                return customer
+              }else if(customer.first_name.toLowerCase().includes(this.state.searchInput) ||mobile.toLowerCase().includes(this.state.searchInput) ||email.toLowerCase().includes(this.state.searchInput) ){
+                return customer
+              }
+          }).map((customer , index )=>{
               return(
                 <tr onDoubleClick={()=>this.setUser(customer.id)}>
           <th scope="row">{index+1}</th>
@@ -326,7 +344,7 @@ this.toggleGetCust()
 
                     </div>
 
-                   <div classNameName="row">
+                   <div className="row">
                        <div className="row match-height">
 
                        <div className="col-3 border mb-1">

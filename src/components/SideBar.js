@@ -7,11 +7,15 @@ import {Link} from 'react-router-dom';
 
 const SideBar = (props) => {
   const [isOpenCustomer, setIsOpenCustomer] = useState(false);
+  const [isOpenOrder, setIsOpenOrder] = useState(false);
+  const [isOpenProduct, setIsOpenProduct] = useState(false);
   const [isOpenSuppler, setIsOpenSupplier] = useState(false);
 //   const [isOpenCustomer, setIsOpenCustomer] = useState(false);
 //   const [isOpenCustomer, setIsOpenCustomer] = useState(false);
 
   const customers = () => setIsOpenCustomer(!isOpenCustomer);
+  const orders = () => setIsOpenOrder(!isOpenOrder);
+  const products = () => setIsOpenProduct(!isOpenProduct);
   const supplier = () => setIsOpenSupplier(!isOpenSuppler);
 
 
@@ -22,11 +26,11 @@ const SideBar = (props) => {
               <img src={logo} width="100" />
             </center>
         </div>
-        <div className="sideBarItem">
+        {/* <div className="sideBarItem">
             <hr /><Button className="btn-block" color="primary"  style={{ marginBottom: '1rem' }}><Link to="/">Dashboard</Link> </Button><hr />
     
-        </div>
-
+        </div> */}
+<br/>
         <div className="sideBarItem">
            <Button className="btn-block" color="primary" onClick={customers} style={{ marginBottom: '1rem' }}>Customers</Button><hr />
             <Collapse isOpen={isOpenCustomer}>
@@ -37,6 +41,36 @@ const SideBar = (props) => {
 
                     <Link to="/AddCustomer">
                        <ListGroupItem className="primary"> <FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; Add Customer </ListGroupItem>
+                    </Link>
+
+                </ListGroup>
+            </Collapse>
+        </div>
+        <div className="sideBarItem">
+           <Button className="btn-block" color="primary" onClick={orders} style={{ marginBottom: '1rem' }}>Orders</Button><hr />
+            <Collapse isOpen={isOpenOrder}>
+                <ListGroup>
+                    <Link to="/ViewOrders">
+                         <ListGroupItem className="primary"><FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; View orders </ListGroupItem>
+                    </Link>
+
+                    <Link to="/AddOrder">
+                       <ListGroupItem className="primary"> <FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; Add order </ListGroupItem>
+                    </Link>
+
+                </ListGroup>
+            </Collapse>
+        </div>
+        <div className="sideBarItem">
+           <Button className="btn-block" color="primary" onClick={products} style={{ marginBottom: '1rem' }}>products</Button><hr />
+            <Collapse isOpen={isOpenProduct}>
+                <ListGroup>
+                    <Link to="/ViewProducts">
+                         <ListGroupItem className="primary"><FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; View Products </ListGroupItem>
+                    </Link>
+
+                    <Link to="/AddProduct">
+                       <ListGroupItem className="primary"> <FontAwesomeIcon icon={faArrowCircleRight} /> &nbsp; &nbsp; Add Product </ListGroupItem>
                     </Link>
 
                 </ListGroup>

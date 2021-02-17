@@ -6,6 +6,9 @@ import Dashboard from './Dashboard'
 import {BrowserRouter as Router , Switch , Route ,hashHistory} from 'react-router-dom'
 import ViewCustomers from './customer/ViewCustomers'
 import AddCustomer from './customer/AddCustomer'
+import ViewProducts from './product/ViewProducts'
+import AddProduct from './product/AddProduct'
+
 import SingleCustomer from './customer/SingleCustomer'
 import Pos from './pos/AddOrders'
 
@@ -58,6 +61,12 @@ export class MainBody extends Component {
                       <Switch>
                           <Route path="/ViewCustomers">
                               <ViewCustomers />
+                          </Route>
+                          <Route path="/ViewProducts">
+                              <ViewProducts />
+                          </Route>
+                          <Route path="/AddProduct">
+                              <AddProduct />
                           </Route>
                           <Route path="/SingleCustomer/:id" component={SingleCustomer}/>
                               {/* <SingleCustomer />
