@@ -1,27 +1,56 @@
 import React, { Component } from 'react'
-import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse , Spinner ,Modal,ModalBody,ModalHeader ,ModalFooter   } from 'reactstrap';
+import { Col, Button, Form, FormGroup, Label, Input, FormText ,Collapse , Spinner ,Modal,ModalBody,ModalHeader ,ModalFooter ,Table  } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBarcode, faBriefcase, faCheckCircle , faDollarSign, faMoneyBill, faPlus, faSearch, faShoppingBag, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import {useParams} from 'react-router-dom';
 import axios from 'axios'
 import './pos.css'
+import {getAllCustomers1} from '../customer/fun'
 
 export class AddOrders extends Component {
     constructor(props){
         super(props);
         this.state = {
             spinner:'show',
-            getCustomerModalState:false
+            getCustomerModalState:false,
+            getUserPage:1,
+            custData:[],
+            PerPage:100,
+            totalGetCustomersItems:0,
+            totalGetCustomersPages:0,
+            toggleGuest:'show',
+            toggleUser:'hide',
+            selectedUser:''
         }
     }
 
     componentDidMount(){
         this.setState({spinner:'hide'})
-
+        this.getAllCustomers()
     }
-    
 
 
+getAllCustomers = () =>{
+    getAllCustomers1(this.state.PerPage , this.state.getUserPage ).then(res=>{
+        this.setState({totalGetCustomersPages:res.headers['x-wp-totalpages']})
+        this.setState({totalGetCustomersItems:res.headers['x-wp-total']})
+    }).then(response=>{
+         for (let i = 1; i <= this.state.totalGetCustomersPages ; i++) {
+            getAllCustomers1(this.state.PerPage , i ).then(res=>{
+                console.log(res.data)
+                this.setState({
+                    custData: this.state.custData.concat(res.data)
+                  })
+            })
+             }        
+    })
+   
+
+    // for (let i = 2; i <= totalPages ; i++) {
+       
+    // }
+   
+}
 
 
     //===============================================
@@ -49,9 +78,7 @@ export class AddOrders extends Component {
 //===============================================
 //       Handel Add customer Form Submition 
 // ===============================================
-getAllCustomers = () =>{
-    console.log('');
-}
+
 toggleGetCust = () =>{
     this.setState({getCustomerModalState:!this.state.getCustomerModalState})
 }
@@ -59,6 +86,36 @@ toggleGetCust = () =>{
 HandelAddFormSubmition = (e) =>{
 e.preventDefault();
  
+}
+// ==============get phone=================
+getMobileData = (customer) =>{
+    for(var i = 0 ; i < customer.meta_data.length ; i ++ ){
+        if(customer.meta_data[i].key === "mobile" ){
+            // this.setState({getMobile:customer.meta_data.value})
+            console.log( customer.meta_data[i].value);
+            return customer.meta_data[i].value
+                 }
+    }           
+
+}
+// ==============get email=================
+getEmailData = (customer) =>{
+for(var i = 0 ; i < customer.meta_data.length ; i ++ ){
+    if(customer.meta_data[i].key === "email" ){
+        console.log( customer.meta_data[i].value);
+        return customer.meta_data[i].value
+             }
+}           
+
+}
+setUser = (id) =>{
+console.log(id)
+this.setState({toggleUser:'row match-height show customerInfo  m-0  pb-1'})
+this.setState({toggleGuest:'hide'})
+console.log(this.state.custData)
+this.setState({selectedUser:this.state.custData.filter(item => item.id === id)[0]})
+this.toggleGetCust()
+
 }
  
     render (){
@@ -68,11 +125,38 @@ e.preventDefault();
         <ModalHeader toggle={this.toggleGetCust}>select customer</ModalHeader>
         <ModalBody>
                 <input type="text" placeholder="Enter Customer Name" onChange={this.getAllCustomers} className="form-control"/>
+                <div className="usersData">
+                <Table dark>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+      {/* {console.log(this.state.custData)} */}
+      {
+         
+          this.state.custData.map((customer , index )=>{
+              return(
+                <tr onDoubleClick={()=>this.setUser(customer.id)}>
+          <th scope="row">{index+1}</th>
+          <td>{customer.first_name}</td>
+          <td>{this.getMobileData(customer)}</td>
+          <td>{this.getEmailData(customer)}</td>
+        </tr>
+              )
+          }) 
+      }
+        
+      
+      </tbody>
+    </Table>
+                </div>
         </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={this.toggleGetCust}>select</Button>{' '}
-          <Button color="secondary" onClick={this.toggleGetCust}>Cancel</Button>
-        </ModalFooter>
+     
      </Modal>
                  <center>
                       <Spinner className={this.state.spinner}  color="primary"/>
@@ -91,12 +175,22 @@ e.preventDefault();
                             </span>
                         </div>
                         <input type="text" onDoubleClick={this.toggleGetCust} className="form-control" id="pos-customer-box" placeholder="Enter Customer Name or Mobile Number to search"  />
+                
                         <div className="input-group-append" id="button-addon2">
                             <button className="btn btn-primary" type="button" data-toggle="modal" data-target="#Pos_addCustomer">
                             <FontAwesomeIcon icon={faPlus} /> Add</button>
                         </div>
+
                     </div>
                     </div>
+                    <div className={this.state.toggleGuest}>Guest</div>
+                    <div className={this.state.toggleUser}>
+                        <div className='col-md-4 border'>Name:   {this.state.selectedUser.first_name ? this.state.selectedUser.first_name : 'name'}</div>
+                        <div className='col-md-4 border'>Phone:  {this.state.selectedUser.meta_data ? this.getMobileData(this.state.selectedUser) : 'have no phoen'}</div>
+                        {/* <div className='col-md-4 border'>Adress: {this.state.selectedUser.meta_data ? this.getEmailData(this.state.selectedUser) : 'have no Email'} </div> */}
+                        <div className='col-md-4 border'>Adress: {this.state.selectedUser.shipping ? this.state.selectedUser.shipping.address_1 : 'have no Adress'} </div>
+                 </div>
+                    
                     {/* order info */}
                     <div className="row bg-gradient-directional-purple white m-0 pt-1 pb-1">
                             <div className="col-6 ">
